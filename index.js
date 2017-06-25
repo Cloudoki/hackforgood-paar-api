@@ -2,10 +2,14 @@ const Hapi = require('hapi');
 const config = require('config');
 const log = require('lib/logger');
 
-log.fatal('>>>>>>>>>>>>>>> Starting PAAR API <<<<<<<<<<<<<<<<');
+log.fatal('Starting PAAR API');
 
+// Instantiate Hapi server
 const server = new Hapi.Server();
-server.connection(config.get('server'));
+
+// Add connections for both servers
+server.connection(config.get('servers').api);
+server.connection(config.get('servers').chat);
 
 // Register plugins
 server.register(require('lib/plugins'), (err) => {
@@ -14,14 +18,13 @@ server.register(require('lib/plugins'), (err) => {
         throw (err);
     }
 
-    log.info('All plugins were loaded successfuly');
-
+    log.info('All plugins were loaded successfuly. Starting servers...');
     server.start((err) => {
         if (err) {
-            log.fatal(err, 'Failed to start server');
+            log.fatal(err, 'Failed to start servers');
             throw err;
         }
 
-        log.info('API server is up and running on port %s', config.get('server').port);
+        log.info({ 'chat': config.get('servers').chat.port, 'api': config.get('servers').api.port }, 'Servers up and running');
     });
 });

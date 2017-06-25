@@ -8,25 +8,45 @@ var config = convict({
         default: "development",
         env: "NODE_ENV"
     },
-    publicHost: {
-        doc: "The public http address.",
-        format: String,
-        default: "http://localhost/",
-        env: "PAAR_API_PUBLIC_HTTP_HOST",
-    },
-    server: {
-        host: {
-            doc: "The IP address to bind.",
-            format: "ipaddress",
-            default: "0.0.0.0",
-            env: "PAAR_API_IP_ADDRESS",
+    servers: {
+        api: {
+            host: {
+                doc: "The IP address to bind.",
+                format: "ipaddress",
+                default: "0.0.0.0",
+                env: "PAAR_API_IP_ADDRESS",
+            },
+            port: {
+                doc: "The port to bind.",
+                format: "port",
+                default: 4000,
+                env: "PAAR_API_PORT"
+            },
+            labels: {
+                doc: "API server label.",
+                format: Array,
+                default: ['api']
+            }
         },
-        port: {
-            doc: "The port to bind.",
-            format: "port",
-            default: 8080,
-            env: "PAAR_API_PORT"
-        }
+        chat: {
+            host: {
+                doc: "The IP address to bind.",
+                format: "ipaddress",
+                default: "0.0.0.0",
+                env: "PAAR_CHAT_IP_ADDRESS",
+            },
+            port: {
+                doc: "The port to bind.",
+                format: "port",
+                default: 4001,
+                env: "PAAR_CHAT_PORT"
+            },
+            labels: {
+                doc: "Chat server label.",
+                format: Array,
+                default: ['chat']
+            }
+        },
     },
     logger: {
         name: {
